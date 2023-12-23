@@ -1041,7 +1041,7 @@ THREE.GLTFExporter.prototype = {
 				}
 
 			}
-			if(material.diffuseTextureUrl){
+			if(!material.map && material.diffuseTextureUrl){
 				var textureLoader = new THREE.TextureLoader();
                                 var diffuseTexture = textureLoader.load(material.diffuseTextureUrl);
 				material.map = diffuseTexture;
