@@ -424,21 +424,21 @@ THREE.GLTFExporter.prototype = {
 			var didTransform = false;
 			var transformDef = {};
 
-			if ( texture.offset.x !== 0 || texture.offset.y !== 0 ) {
+			if ( texture.offset && texture.offset.x !== 0 || texture.offset.y !== 0 ) {
 
 				transformDef.offset = texture.offset.toArray();
 				didTransform = true;
 
 			}
 
-			if ( texture.rotation !== 0 ) {
+			if ( texture.rotation && texture.rotation !== 0 ) {
 
 				transformDef.rotation = texture.rotation;
 				didTransform = true;
 
 			}
 
-			if ( texture.repeat.x !== 1 || texture.repeat.y !== 1 ) {
+			if ( texture.repeat && texture.repeat.x !== 1 || texture.repeat.y !== 1 ) {
 
 				transformDef.scale = texture.repeat.toArray();
 				didTransform = true;
@@ -859,10 +859,10 @@ THREE.GLTFExporter.prototype = {
 
 			var gltfSampler = {
 
-				magFilter: THREE_TO_WEBGL[ map.magFilter ],
-				minFilter: THREE_TO_WEBGL[ map.minFilter ],
-				wrapS: THREE_TO_WEBGL[ map.wrapS ],
-				wrapT: THREE_TO_WEBGL[ map.wrapT ]
+				magFilter: THREE_TO_WEBGL[ map.samplerDescriptor.magFilter ],
+				minFilter: THREE_TO_WEBGL[ map.samplerDescriptor.minFilter ],
+				wrapS: THREE_TO_WEBGL[ map.samplerDescriptor.wrapS ],
+				wrapT: THREE_TO_WEBGL[ map.samplerDescriptor.wrapT ]
 
 			};
 
@@ -894,7 +894,7 @@ THREE.GLTFExporter.prototype = {
 			var gltfTexture = {
 
 				sampler: processSampler( map ),
-				source: processImage( map.image, map.format, map.flipY )
+				source: processImage( map.main.source, map.main.format, map.storageDescriptor.flipY )
 
 			};
 
@@ -1035,14 +1035,12 @@ THREE.GLTFExporter.prototype = {
 
 			}
 
-			if(!material.map && material.diffuseTextureUrl){
-				var textureLoader = new THREE.TextureLoader();
-                                var diffuseTexture = textureLoader.load(material.diffuseTextureUrl);
-				material.map = diffuseTexture;
+			if(!material.map && material.texture){
+				material.map = material.texture;
 			}
 
 			// pbrMetallicRoughness.baseColorTexture or pbrSpecularGlossiness diffuseTexture
-			if ( material.map && material.map.image && 1==1 ) {
+			if ( material.map ) {
 
 				var baseColorMapDef = { index: processTexture( material.map ) };
 				applyTextureTransform( baseColorMapDef, material.map );
