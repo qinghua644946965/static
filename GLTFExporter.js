@@ -1048,7 +1048,7 @@ THREE.GLTFExporter.prototype = {
 			}
 
 			// pbrMetallicRoughness.baseColorTexture or pbrSpecularGlossiness diffuseTexture
-			if ( material.map ) {
+			if ( material.map && 1==2 ) {
 
 				var baseColorMapDef = { index: processTexture( material.map ) };
 				applyTextureTransform( baseColorMapDef, material.map );
