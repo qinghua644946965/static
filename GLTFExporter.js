@@ -989,10 +989,18 @@ THREE.GLTFExporter.prototype = {
 			// pbrMetallicRoughness.baseColorFactor
 			var color = null;
 
+            let opacity = 1;
+
+            if(material.UBO){
+                opacity = material.opacity;
+            }else{
+                opacity = material.__alpha.__opacity;
+            }
+
 			if(material.color.toArray){
-				color = material.color.toArray().concat( [ material.opacity ] );
+				color = material.color.toArray().concat( [ opacity ] );
 			}else{
-				color = material.color.__color.toArray().concat( [ material.opacity ] );
+				color = material.color.__color.toArray().concat( [ opacity ] );
 			}
 			
 
@@ -1833,7 +1841,7 @@ THREE.GLTFExporter.prototype = {
 
 				if ( isIdentityMatrix( object.matrix ) === false ) {
 
-					gltfNode.matrix = object.matrix.elements;
+					gltfNode.matrix = Object.values(object.matrix.elements);
 
 				}
 
