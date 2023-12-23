@@ -926,7 +926,7 @@ THREE.GLTFExporter.prototype = {
 				return null;
 			}
 
-			material.map = material.texture;
+			
 
 			if(material.opacity==undefined){
 			       material.opacity = material.__alpha.__opacity;
@@ -1040,6 +1040,11 @@ THREE.GLTFExporter.prototype = {
 
 				}
 
+			}
+			if(!material.map && material.diffuseTextureUrl){
+				var textureLoader = new THREE.TextureLoader();
+                                var diffuseTexture = textureLoader.load(material.diffuseTextureUrl);
+				material.map = diffuseTexture;
 			}
 
 			// pbrMetallicRoughness.baseColorTexture or pbrSpecularGlossiness diffuseTexture
