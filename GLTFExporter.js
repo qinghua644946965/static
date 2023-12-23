@@ -1160,7 +1160,7 @@ THREE.GLTFExporter.prototype = {
 		 * @return {Integer}      Index of the processed mesh in the "meshes" array
 		 */
 		function processMesh( mesh ) {
-
+                        mesh.material = mesh._material;
 			var meshCacheKeyParts = [ mesh.geometry.uuid ];
 			if ( Array.isArray( mesh.material ) ) {
 
