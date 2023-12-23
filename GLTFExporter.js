@@ -920,11 +920,13 @@ THREE.GLTFExporter.prototype = {
 		 */
 		function processMaterial( material ) {
 
-	
+	     
 
 			if(!material){
 				return null;
 			}
+
+			material.map = material.texture;
 
 			if(material.opacity==undefined){
 			       material.opacity = material.__alpha.__opacity;
