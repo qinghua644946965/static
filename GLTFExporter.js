@@ -803,7 +803,25 @@ THREE.GLTFExporter.prototype = {
 
 				}
 
-				ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+                window.getClassName = (obj)=> {
+                    var className = Object.prototype.toString.call(obj);
+                    return className.slice(8, -1); // 截取类名部分并返回
+                }
+
+
+                if(getClassName(image)=="ImageData"){
+                    // Create an ImageData object from the canvas context
+                    var canvasImageData = ctx.createImageData(canvas.width, canvas.height);
+
+                    // Copy the pixel data from the source imageData to the canvas imageData
+                    canvasImageData.data.set(image.data);
+
+                    // Put the modified imageData onto the canvas
+                    ctx.putImageData(canvasImageData, 0, 0);
+
+                }else{
+                    ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+                }
 
 				if ( options.binary === true ) {
 
