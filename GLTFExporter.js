@@ -367,6 +367,10 @@ THREE.GLTFExporter.prototype = {
 		 */
 		function serializeUserData( object, gltfProperty ) {
 
+			if(!object.userData){
+                            object.userData = {};
+			}
+
 			if ( Object.keys( object.userData ).length === 0 ) {
 
 				return;
