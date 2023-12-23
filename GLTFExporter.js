@@ -368,7 +368,7 @@ THREE.GLTFExporter.prototype = {
 		function serializeUserData( object, gltfProperty ) {
 
 			if(!object.userData){
-                            object.userData = {};
+               return;
 			}
 
 			if ( Object.keys( object.userData ).length === 0 ) {
@@ -920,16 +920,8 @@ THREE.GLTFExporter.prototype = {
 		 */
 		function processMaterial( material ) {
 
-	     
-
 			if(!material){
-				return null;
-			}
-
-			
-
-			if(material.opacity==undefined){
-			       material.opacity = material.__alpha.__opacity;
+                return null;
 			}
 
 			if ( cachedData.materials.has( material ) ) {
@@ -980,10 +972,11 @@ THREE.GLTFExporter.prototype = {
 			var color = null;
 
 			if(material.color.toArray){
-			     color = material.color.toArray().concat( [ material.opacity ] );
+				color = material.color.toArray().concat( [ material.opacity ] );
 			}else{
-                             color = material.color.__color.toArray().concat( [ material.opacity ] );
+				color = material.color.__color.toArray().concat( [ material.opacity ] );
 			}
+			
 
 			if ( ! equalArray( color, [ 1, 1, 1, 1 ] ) ) {
 
@@ -1041,6 +1034,7 @@ THREE.GLTFExporter.prototype = {
 				}
 
 			}
+
 			if(!material.map && material.diffuseTextureUrl){
 				var textureLoader = new THREE.TextureLoader();
                                 var diffuseTexture = textureLoader.load(material.diffuseTextureUrl);
@@ -1048,7 +1042,7 @@ THREE.GLTFExporter.prototype = {
 			}
 
 			// pbrMetallicRoughness.baseColorTexture or pbrSpecularGlossiness diffuseTexture
-			if ( material.map && material.map.image && 1==1 ) {
+			if ( material.map && material.map.image && 1==2 ) {
 
 				var baseColorMapDef = { index: processTexture( material.map ) };
 				applyTextureTransform( baseColorMapDef, material.map );
@@ -1183,8 +1177,13 @@ THREE.GLTFExporter.prototype = {
 		 * @return {Integer}      Index of the processed mesh in the "meshes" array
 		 */
 		function processMesh( mesh ) {
-                        mesh.material = mesh._material;
+
 			var meshCacheKeyParts = [ mesh.geometry.uuid ];
+
+			if(!mesh.material && mesh._material){
+				mesh.material = mesh._material;
+			}
+
 			if ( Array.isArray( mesh.material ) ) {
 
 				for ( var i = 0, l = mesh.material.length; i < l; i ++ ) {
