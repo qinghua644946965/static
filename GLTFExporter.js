@@ -424,7 +424,7 @@ THREE.GLTFExporter.prototype = {
 			var didTransform = false;
 			var transformDef = {};
 
-			if ( texture.offset && texture.offset.x !== 0 || texture.offset.y !== 0 ) {
+			if ( texture.offset && (texture.offset.x !== 0 || texture.offset.y !== 0) ) {
 
 				transformDef.offset = texture.offset.toArray();
 				didTransform = true;
@@ -438,7 +438,7 @@ THREE.GLTFExporter.prototype = {
 
 			}
 
-			if ( texture.repeat && texture.repeat.x !== 1 || texture.repeat.y !== 1 ) {
+			if ( texture.repeat && (texture.repeat.x !== 1 || texture.repeat.y !== 1) ) {
 
 				transformDef.scale = texture.repeat.toArray();
 				didTransform = true;
